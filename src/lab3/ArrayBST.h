@@ -14,10 +14,10 @@ class Bst
         public:
             Bst()
             {
-
+                //Empty positions are denoted by zero
                 for(int i=0;i<15;i++)
                 {
-                    tree[i]=-1;
+                    tree[i]=0;
                 }
 
             }
@@ -38,7 +38,7 @@ class Bst
             {
                 for(int i=0;i<15;i++)
                 {
-                    if(tree[i]!=-1)
+                    if(tree[i]!=0)
                     {
                         return false;
                     }
@@ -46,68 +46,7 @@ class Bst
                 return true;
 
             }
-            void addBST(int pr , int data)
-
-                {
-                    if (tree[pr]==-1)
-                        {
-                        tree[pr]= data ;
-
-                        }
-                    else if (data< tree[pr] )
-                    {
-                        return addBST(left(pr), data);
-                    }
-                    else
-                    {
-                         return addBST(right(pr), data);
-                    }
-
-                }
-            void removeBST(int root , int key)
-            {
-
-
-                    if(isEmpty())
-                    {
-                        cout<<"Bst is Empty"<<endl;
-                    }
-                    else if(key < tree[root])
-                    {
-                        return removeBST(left(root) , key);
-                    }
-                    else if (key> tree[root])
-                    {
-                        return removeBST(right(root) , key);
-                    }
-                    else
-                    {
-                        if(left(root)>14&&right(root)>14&&tree[root]==key)
-                        {tree[root]=-1;}
-
-
-                        else
-                        {
-                            int a;
-                            int b =tree[left(root)];
-                            for(int i=left(root);i<15 ; i=right(i))
-                            {
-                                if (b<tree[i])
-                                {
-                                    b=tree[i];
-                                    a=i;
-                                }
-                            }
-                            tree[root]= b;
-                            tree[a]=-1;
-
-
-                        }
-
-
-                }
-            }
-            bool searchBST(int targetKey)
+             bool searchBST(int targetKey)
             {
                 for(int i=0;i<15;i++)
                 {
@@ -118,6 +57,96 @@ class Bst
                 }
                 return false;
             }
+            void addBST( int data)
+
+                {
+                    int temp=0;
+                    while(tree[temp]!=0)
+                    {
+                        if (data< tree[temp] )
+                        {
+                            temp=left(temp);
+                        }
+                        else
+                        {
+                            temp=right(temp);
+                        }
+                    }
+                    tree[temp]=data;
+
+                }
+            void removeBST( int key)
+            {
+
+                if(searchBST(key))
+                {
+                    int temp=0;
+                    while(tree[temp]!=key)
+                    {
+                        if (key<tree[temp])
+                        {
+                            temp=left(temp);
+                        }
+                        else
+                        {
+                            temp=right(temp);
+                        }
+                    }
+                    //for no child
+                     if(left(temp)>14&&right(temp)>14&&tree[temp]==key)
+                        {tree[temp]=-1;}
+                     else if(tree[left(temp)]==0 && tree[right(temp)]==0)
+                        {tree[temp]=0;}
+
+                    //for one child
+                    else if(tree[left(temp)]==0||tree[right(temp)]==0)
+                    {
+                        if(tree[left(temp)]==0)
+                        {
+                            tree[temp]=tree[right(temp)];
+                            tree[right(temp)]=tree[right(right(temp))];
+                            tree[right(right(temp))]=0;
+                            tree[left(temp)]=tree[left(right(temp))];
+                            tree[left(right(temp))]=0;
+
+
+                        }
+                        else
+                        {
+                            tree[temp]=tree[left(temp)];
+                            tree[right(temp)]=tree[right(left(temp))];
+                            tree[right(left(temp))]=0;
+                            tree[left(temp)]=tree[left(left(temp))];
+                            tree[left(left(temp))]=0;
+                        }
+
+                    }
+                    //for both child
+                    else
+                    {
+                            int a;
+                            int b =tree[left(temp)];
+                            for(int i=left(temp);i<15 ; i=right(i))
+                            {
+                                if (b<tree[i])
+                                {
+                                    a=i;
+                                    b=tree[i];
+
+                                }
+                            }
+                            tree[temp]= b;
+                            if(a==0){
+                                tree[left(temp)]=0;
+                            }
+                            else{
+                            tree[a]=0;}
+                    }
+
+
+                }
+            }
+
             void trasverse()
             {
                 cout<<endl;
