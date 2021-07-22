@@ -1,11 +1,12 @@
 #pragma once
 #include<bits/stdc++.h>
 #include<iostream>
+#include"AbstactBST.h"
 using namespace std;
 
 
 
-class Bst
+class Bst:public BST
     {
         private:
             int tree[15];
