@@ -1,18 +1,19 @@
 #pragma once
 #include<bits/stdc++.h>
+#include "AbstactBST.h"
 #include<iostream>
 using namespace std;
 
 
 
-class Bst
+class ArrayBST
     {
         private:
             int tree[15];
             int root=0;
 
         public:
-            Bst()
+            ArrayBST()
             {
                 //Empty positions are denoted by zero
                 for(int i=0;i<15;i++)
